@@ -10,16 +10,21 @@
 
 #define MIDDLE_C 261.626
 
-int bpm = 80;
+int bpm = 90;
 
 void setup() {                
   pinMode(LED, OUTPUT); 
   pinMode(SOUND_OUT, OUTPUT);  
+//  Serial.begin(9600);
 }
 
 void loop() {
   playNote(WHOLE, MIDDLE_C);
-  playNote(WHOLE, 440);
+  playNote(2.0, 440);
+  playNote(HALF, MIDDLE_C);
+  playNote(QUARTER, 880);
+  playNote(QUARTER, 220);
+  playNote(WHOLE, 523.251);
   rest(WHOLE);
 }
 
@@ -29,14 +34,23 @@ int hertzToDelay(float hertz) {
 
 void rest(int noteValue) {
     delay(valueToDuration(noteValue) / 100);
+//    Serial.println("Rest.");
+
 }
 
-void playNote(int noteValue, float frequency) {
+void playNote(float noteValue, float frequency) {
+/*  Serial.println("playing note: ");
+  Serial.print(noteValue, DEC);
+  Serial.print('\t');
+  Serial.print(frequency, DEC);
+  Serial.print('\t');
+  Serial.print(valueToDuration(noteValue), DEC);
+  Serial.println(""); */
   emitTone(valueToDuration(noteValue), hertzToDelay(frequency));
 }
 
-int valueToDuration(int noteValue) {
-  return 1000000 * 60 / bpm * noteValue;
+float valueToDuration(float noteValue) { // in µSec
+  return 100000 * 60 * noteValue / bpm;
 }
 
 void blink(int on, int off, int frequency) {
@@ -46,13 +60,19 @@ void blink(int on, int off, int frequency) {
   delay(off);
 }
 
-void emitTone(int duration, int frequency) { // Emit 1K tone on pin SOUND_OUT
+void emitTone(float durationInMiliseconds, int frequencyInMicroseconds) { // Emit tone on pin SOUND_OUT
 digitalWrite(LED, HIGH);
-  for (int i = 0; i < duration / frequency * 10; i++) {
+/*  Serial.println("Emitting tone: ");
+  Serial.print(durationInMiliseconds * 10 / frequencyInMicroseconds, DEC);
+  Serial.print('\t');
+  Serial.print(frequencyInMicroseconds, DEC);
+  Serial.println("");
+*/
+  for (int i = 0; i < durationInMiliseconds * 10 / frequencyInMicroseconds; i++) {
     digitalWrite(SOUND_OUT, HIGH);
-    delayMicroseconds(frequency / 2);
+    delayMicroseconds(frequencyInMicroseconds / 2);
     digitalWrite(SOUND_OUT, LOW);
-    delayMicroseconds(frequency / 2);
+    delayMicroseconds(frequencyInMicroseconds / 2);
   }
 digitalWrite(LED, LOW);
 }
