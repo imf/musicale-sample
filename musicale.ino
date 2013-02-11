@@ -9,6 +9,17 @@
 #define EIGHTH .128
 
 #define MIDDLE_C 261.626
+#define CIS 277
+#define D 294
+#define DIS 311
+#define E 330
+#define MIDDLE_F 349
+#define FIS 370
+#define G 392
+#define GIS 415
+#define A 440
+#define AIS 466
+#define B 494
 
 int bpm = 90;
 
@@ -22,10 +33,19 @@ void loop() {
   playNote(WHOLE, MIDDLE_C);
   playNote(2.0, 440);
   playNote(HALF, MIDDLE_C);
-  playNote(QUARTER, 880);
+  playNote(QUARTER, B);
   playNote(QUARTER, 220);
   playNote(WHOLE, 523.251);
   rest(WHOLE);
+  playNote(QUARTER, MIDDLE_C);
+  playNote(QUARTER, D);
+  playNote(QUARTER, E);
+  playNote(QUARTER, MIDDLE_F);
+  playNote(QUARTER, G);
+  playNote(QUARTER, A);
+  playNote(QUARTER, B);
+  playNote(QUARTER, MIDDLE_C * 2);
+  rest(WHOLE);  
 }
 
 int hertzToDelay(float hertz) {
